@@ -6,11 +6,15 @@ namespace Zuul
 	{
 		private Parser parser;
 		private Room currentRoom;
+		private Player player;
+
 
 		public Game ()
 		{
-			CreateRooms();
 			parser = new Parser();
+			player = new Player();
+			CreateRooms();
+
 		}
 
 		private void CreateRooms()
@@ -19,6 +23,7 @@ namespace Zuul
 			Room outside = new Room("outside the main entrance of the university");
 			Room theatre = new Room("in a lecture theatre");
 			Room pub = new Room("in the campus pub");
+			Room basement = new Room("in the basement");
 			Room lab = new Room("in a computing lab");
 			Room office = new Room("in the computing admin office");
 
@@ -30,6 +35,9 @@ namespace Zuul
 			theatre.AddExit("west", outside);
 
 			pub.AddExit("east", outside);
+			pub.AddExit("down", basement);
+
+			basement.AddExit("up", pub); 
 
 			lab.AddExit("north", outside);
 			lab.AddExit("east", office);
@@ -51,8 +59,19 @@ namespace Zuul
 			bool finished = false;
 			while (!finished)
 			{
-				Command command = parser.GetCommand();
-				finished = ProcessCommand(command);
+				if (player.isAlive())
+				{
+					Command command = parser.GetCommand();
+					finished = ProcessCommand(command);
+				}
+
+				else
+				{
+					finished = true;
+					Console.WriteLine("you died!");
+
+				}
+
 			}
 			Console.WriteLine("Thank you for playing.");
 			Console.WriteLine("Press [Enter] to continue.");
@@ -96,8 +115,14 @@ namespace Zuul
 				case "go":
 					GoRoom(command);
 					break;
+				case "look":
+					Console.WriteLine(currentRoom.GetLongDescription());
+					break;
 				case "quit":
 					wantToQuit = true;
+					break;
+				case "status":
+					Console.WriteLine("ur health is " + player.statusH());
 					break;
 			}
 
@@ -125,7 +150,8 @@ namespace Zuul
 		 */
 		private void GoRoom(Command command)
 		{
-			if(!command.HasSecondWord())
+
+			if (!command.HasSecondWord())
 			{
 				// if there is no second word, we don't know where to go...
 				Console.WriteLine("Go where?");
@@ -144,6 +170,7 @@ namespace Zuul
 			else
 			{
 				currentRoom = nextRoom;
+				player.Damage(10);
 				Console.WriteLine(currentRoom.GetLongDescription());
 			}
 		}

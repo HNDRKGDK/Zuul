@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zuul", "Zuul\Zuul.csproj", "{36F5B60A-A625-4118-91E9-CB9595603D46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zuul", "Zuul\Zuul.csproj", "{36F5B60A-A625-4118-91E9-CB9595603D46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
